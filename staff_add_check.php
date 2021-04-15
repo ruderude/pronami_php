@@ -44,7 +44,7 @@
         print
         '条件OKです。';
         print
-        '<form method="post" action="staff_add_check.php">';
+        '<form method="post" action="staff_add_done.php">';
         print
         '<input type="hidden" name="name" value="' . $staff_name . '">';
         print
