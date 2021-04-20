@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>staff_done</title>
-</head>
-<body>
-    <?php
+<?php
 
     try {
-        $staff_name = $_POST["name"];
-        $staff_pass = $_POST["pass"];
+        $staff_name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
+        $staff_pass = trim(mb_convert_kana($_POST["pass"], "s", 'UTF-8'));
         
         $staff_name = htmlspecialchars($staff_name, ENT_QUOTES, 'UTF-8');
         $staff_pass = htmlspecialchars($staff_pass, ENT_QUOTES, 'UTF-8');
+
+        // パスワードを暗号化
+        $staff_pass = md5($staff_pass);
 
         $dsn = 'mysql:dbname=shop;host=127.0.0.1';
         $user = 'admin';
@@ -31,9 +25,6 @@
         // var_dump($data);
         // ここまで
 
-
-
-
         $sql = "INSERT INTO mst_staff (name, password) VALUES (:name, :password)";
 
         $stmt = $dbh->prepare($sql);
@@ -47,17 +38,32 @@
 
         $dbh = null;
 
-        echo $staff_name . "さんを追加しました。" . PHP_EOL;
-
+        $message = $staff_name . "さんを追加しました。<br>";
 
     } catch (PDOException $e) {
         // 通常本番環境ではエラー文は見せない
-        echo "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        exit();
+        $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
     }
 
+?>
 
-    ?>
-    <a href="staff_list.php">戻る</a>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>staff_done</title>
+</head>
+<body>
+    <?php if (!isset($error_message)) :?>
+        <h2>スタッフ追加完了!</h2>
+        <div><?= $message ?></div>
+        <a href="staff_list.php"><button>戻る</button></a>
+    <?php else: ?>
+        <p style="color:tomato"><?= $error_message ?></p>
+        <a href="staff_list.php"><button>戻る</button></a>
+　　<?php endif; ?>
+
 </body>
 </html>

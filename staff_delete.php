@@ -1,6 +1,8 @@
 <?php
     try {
-        $staff_code = $_GET["staff_code"];
+        $staff_code = trim(mb_convert_kana($_GET["staff_code"], "s", 'UTF-8'));
+
+        $staff_code = htmlspecialchars($staff_code, ENT_QUOTES, 'UTF-8');
 
         $dsn = 'mysql:dbname=shop;host=127.0.0.1';
         $user = 'admin';
@@ -21,14 +23,13 @@
 
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        var_dump($member);
+        // var_dump($member);
 
         $dbh = null;
 
     } catch(Exception $e) {
         // 通常本番環境ではエラー文は見せない
-        echo "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        exit();
+        $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
     }
 
 ?>
@@ -42,23 +43,20 @@
     <title>Delete</title>
 </head>
 <body>
-<h2>スタッフ削除</h2>
-<h4>スタッフコード：<?= $member["code"] ?></h4>
-<br>
-このスタッフを削除してよろしいですか？
-<form method="post" action="staff_delete_done.php">
-    スタッフ名<br>
-    <input type="hidden" name="code" value="<?= $member["code"] ?>" >
-    <input type="hidden" name="name" value="<?= $member["name"] ?>" >
-    <h4><?= $member["name"] ?></h4>
-    <!-- パスワードを入力してください。 <br>
-    <input type="password" name="pass1" style="width:100px"><br>
-    パスワードをもう一度入力してください。 <br>
-    <input type="password" name="pass2" style="width:100px"><br> -->
-    <br>
-    <input type="button" onclick="history.back()" value="戻る">
-    <input type="submit" value="削除する"><br>
-</form>
+    <h2>スタッフ削除</h2>
+    <?php if (isset($error_message)) :?>
+        <p style="color:tomato"><?= $error_message ?></p>
+　　<?php endif; ?>
+
+    <h4>スタッフコード：<?= htmlspecialchars($member["code"], ENT_QUOTES, 'UTF-8') ?></h4>
+    このスタッフを削除してよろしいですか？
+    <form method="post" action="staff_delete_done.php">
+        スタッフ名：<strong></ｓ><?= htmlspecialchars($member["name"], ENT_QUOTES, 'UTF-8') ?></strong><br>
+        <input type="hidden" name="code" value="<?= htmlspecialchars($member["code"], ENT_QUOTES, 'UTF-8') ?>" >
+        <input type="hidden" name="name" value="<?= htmlspecialchars($member["name"], ENT_QUOTES, 'UTF-8') ?>" >
+        <input type="button" onclick="history.back()" value="戻る">
+        <input type="submit" value="削除する"><br>
+    </form>
 
 </body>
 </html>

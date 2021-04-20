@@ -10,19 +10,19 @@
     // $staff_pass1 = htmlspecialchars($staff_pass1, ENT_QUOTES, 'UTF-8');
     // $staff_pass2 = htmlspecialchars($staff_pass2, ENT_QUOTES, 'UTF-8');
 
-    $errors = [];
+    $error_messages = [];
 
     if($staff_name == '') {
-        $errors[] = 'スタッフ名が入力されていません';
+        $error_messages[] = 'スタッフ名が入力されていません';
     } elseif(mb_strlen($staff_name) >= 15) {
-        $errors[] = 'スタッフ名が長すぎます';
+        $error_messages[] = 'スタッフ名が長すぎます';
     }
 
     // var_dump($_POST);
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,9 +30,9 @@
     <title>編集チェック</title>
 </head>
 <body>
-    <?php if (empty($errors)) :?>
+    <?php if (empty($error_messages)) :?>
         条件OKです。
-        <h4>スタッフ名：<?= $staff_name ?></h4>
+        <h4>スタッフ名：<?= $staff_name ?> に修正しますか？</h4>
         <form method="post" action="staff_edit_done.php">
         <input type="hidden" name="name" value="<?= $staff_name ?>">
         <input type="hidden" name="code" value="<?= $staff_code ?>">
@@ -40,8 +40,8 @@
         <input type="button" onclick="history.back()" value="戻る">
         <input type="submit" value="OK">
 　　<?php else: ?>
-        <?php foreach ($errors as $error) : ?>
-            <h4><?= $error ?></h4>
+        <?php foreach ($error_messages as $error) : ?>
+            <div style="color:tomato"><?= $error ?></div>
         <?php endforeach; ?>
         <input type="button" onclick="history.back()" value="戻る">
 　　<?php endif; ?>

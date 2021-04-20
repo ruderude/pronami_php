@@ -1,6 +1,8 @@
 <?php
     try {
-        $staff_code = $_GET["staff_code"];
+        $staff_code = trim(mb_convert_kana($_GET["staff_code"], "s", 'UTF-8'));
+
+        $staff_code = htmlspecialchars($staff_code, ENT_QUOTES, 'UTF-8');
 
         $dsn = 'mysql:dbname=shop;host=127.0.0.1';
         $user = 'admin';
@@ -21,37 +23,34 @@
 
         $member = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        var_dump($member);
-
         $dbh = null;
 
     } catch(Exception $e) {
         // 通常本番環境ではエラー文は見せない
-        echo "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        exit();
+        $error_message = "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
     }
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disp</title>
+    <title>スタッフ詳細</title>
 </head>
 <body>
-<h2>スタッフ参照</h2>
-<h4>スタッフコード：<?= $member["code"] ?></h4>
-<br>
-<form method="post" action="staff_edit_check.php">
-    スタッフ名<br>
-    <h4><?= $member["name"] ?></h4>
-    <br>
-    <input type="button" onclick="history.back()" value="戻る">
-    <input type="submit" value="OK"><br>
-</form>
-
+    <?php if (!isset($error_message)) :?>
+        <h2>スタッフ詳細</h2>
+        <div>スタッフコード：<?= htmlspecialchars($member["code"], ENT_QUOTES, 'UTF-8') ?></div>
+        <div>スタッフ名：<?= htmlspecialchars($member["name"], ENT_QUOTES, 'UTF-8') ?></div>
+        <br>
+        <a href="staff_list.php"><button>戻る</button></a>
+    <?php else: ?>
+        <h2>スタッフ参照</h2>
+        <p style="color:tomato"><?= $error_message ?></p>
+        <a href="staff_list.php"><button>戻る</button></a>
+　　<?php endif; ?>
 </body>
 </html>

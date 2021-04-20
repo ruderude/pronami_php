@@ -7,7 +7,7 @@
     <title>NG</title>
 </head>
 <body>
-    <h3>スタッフが選択されていません</h3>
-    <a href="staff_list.php">戻る</a>
+    <h3 style="color:tomato">スタッフが選択されていません</h3>
+    <a href="staff_list.php"><button>戻る</button></a>
 </body>
 </html>

@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    スタッフ追加<br>
+    <h3>スタッフ追加</h3>
     <br>
     <form method="post" action="staff_add_check.php">
         スタッフ名を入力してください。<br>
@@ -20,8 +20,8 @@
         パスワードをもう一度入力してください。 <br>
         <input type="password" name="pass2" style="width:100px"><br>
         <br>
-        <input type="button" onclick="history.back()" value="戻る"><br>
-        <input type="submit" value="OK"><br>
+        <input type="button" onclick="history.back()" value="戻る">
+        <input type="submit" value="OK">
     </form>
 </body>
 

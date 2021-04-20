@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <?php echo "Hello World!"; ?>
-    <a href="./staff_add.php">スタッフ追加</a>
+    <?php echo "トップ画面<br>"; ?>
+    <a href="./staff_list.php">スタッフ一覧</a>
 </body>
 </html>
